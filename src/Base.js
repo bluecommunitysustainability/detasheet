@@ -39,7 +39,7 @@ class Base {
             increment: (amount) => (
                 (range) => (
                     this.get(range)
-                        .then(data => data.map(row => row.map(cell => cell.match(/^\d+$/) ? parseInt(cell) + amount : cell)))   
+                        .then(data => data.map(row => row.map(cell => cell.match(/^\d+$/) ? new Number(cell) + amount : cell)))   
                 )
             )
 
@@ -52,7 +52,7 @@ class Base {
 
             this.sheets.spreadsheets.values.clear({
                 ...(await this.#createShared(range)),
-            }, (err, response) =>  err ? reject(err) : resolve(response))
+            }, (err, response) =>  err ? reject(err) : resolve(response.data))
 
         })
 
