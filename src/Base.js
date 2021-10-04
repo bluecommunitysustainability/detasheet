@@ -11,6 +11,14 @@ class Base {
 
     }
 
+    async #createShared(range) {
+        return {
+            spreadsheetId: this.sheetID,
+            auth: await this.client, 
+            range: this.#createRange(range)
+        }
+    }
+
     #createRange(range) {
         return this.sheetName + "!" + (range.includes(":") ? range : new Array(2).fill(range).join(":"))
     }
@@ -19,12 +27,24 @@ class Base {
 
         return new Promise(async (resolve, reject) => {
             
-            this.sheets.spreadsheets.values.get({
-                spreadsheetId: this.sheetID,
-                auth: await this.client, 
-                range: this.#createRange(range)
-            }, (err, response) =>  err ? reject(err) : resolve(response.data.values))
-        
+            this.sheets.spreadsheets.values.get({ ...(await this.#createShared(range)) }, (err, response) => (
+                err ? reject(err) : resolve(response.data.values))
+            )
+
+        })
+
+    }
+
+    update(data, range="A1") {
+
+        return new Promise(async (resolve, reject) => {
+
+            this.sheets.spreadsheets.values.uppdate({
+                ...(await this.#createShared(range)),
+                valueInputOption: "RAW",
+                resource: { values: [ Array.isArray(data) ? data : [data] ] }
+            }, (err, response) =>  err ? reject(err) : resolve(response))
+
         })
 
     }
@@ -34,10 +54,8 @@ class Base {
         return new Promise(async (resolve, reject) => {
 
             this.sheets.spreadsheets.values.append({
-                spreadsheetId: this.sheetID,
-                auth: await this.client, 
+                ...(await this.#createShared(range)),
                 valueInputOption: "RAW",
-                range: this.#createRange(range),
                 resource: { values: [ Array.isArray(data) ? data : [data] ] }
             }, (err, response) =>  err ? reject(err) : resolve(response))
 
