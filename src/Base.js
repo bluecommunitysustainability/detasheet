@@ -11,6 +11,11 @@ class Base {
         this.utils = this.#createUtils()
     }
 
+    async #formatData(range, data) {
+        const utilData = typeof data == "function" ? (await data(range)) : data
+        return Array.isArray(utilData) ? utilData : [utilData]
+    }
+
     async #createShared(range) {
         return {
             spreadsheetId: this.sheetID,
@@ -31,23 +36,14 @@ class Base {
                     .map((n) => Math.random().toString(36)[2] || n).join('')
             ),
 
-            increment: (range) => (
-                this.get(range)
-                    .then(data => data.map(row => row.map(cell => cell.match(/^\d+$/) ? parseInt(cell) + 1 : cell)))
+            increment: (amount) => (
+                (range) => (
+                    this.get(range)
+                        .then(data => data.map(row => row.map(cell => cell.match(/^\d+$/) ? parseInt(cell) + amount : cell)))   
+                )
             )
+
         }
-    }
-
-    get(range) {
-
-        return new Promise(async (resolve, reject) => {
-            
-            this.sheets.spreadsheets.values.get({ ...(await this.#createShared(range)) }, (err, response) => (
-                err ? reject(err) : resolve(response.data.values))
-            )
-
-        })
-
     }
 
     clear(range) {
@@ -62,32 +58,39 @@ class Base {
 
     }
 
-    query(data) {
+    get(range) {
+
+        return new Promise(async (resolve, reject) => {
+            
+            this.sheets.spreadsheets.values.get({ ...(await this.#createShared(range)) }, (err, response) => (
+                err ? reject(err) : resolve(response.data.values))
+            )
+
+        })
 
     }
 
-    update(data, range) {
-
+    set(range, data) {
         return new Promise(async (resolve, reject) => {
 
             this.sheets.spreadsheets.values.update({
                 ...(await this.#createShared(range)),
                 valueInputOption: "RAW",
-                resource: { values: [ Array.isArray(data) ? data : [data] ] }
+                resource: { values: await this.#formatData(range, data) }
             }, (err, response) =>  err ? reject(err) : resolve(response))
 
         })
 
     }
 
-    put(data, range) {
+    put(range, data) {
 
         return new Promise(async (resolve, reject) => {
 
             this.sheets.spreadsheets.values.append({
                 ...(await this.#createShared(range)),
                 valueInputOption: "RAW",
-                resource: { values: [ Array.isArray(data) ? data : [data] ] }
+                resource: { values: await this.#formatData(range, data) }
             }, (err, response) =>  err ? reject(err) : resolve(response))
 
         })
