@@ -9,6 +9,5 @@ const credentials = JSON.parse(fs.readFileSync("./tokyo-trilogy-327817-7c662991a
 const deta = new Detasheet(credentials, "1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc")
 const db = deta.Base("Detasheet")
 
-db.get("A1").then(console.log)
-
+db.update("bruh", "A1")
 // db.put("adsflkajsdflk jadklsjf as fljasdklf", "C1")

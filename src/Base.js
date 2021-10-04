@@ -39,7 +39,7 @@ class Base {
 
         return new Promise(async (resolve, reject) => {
 
-            this.sheets.spreadsheets.values.uppdate({
+            this.sheets.spreadsheets.values.update({
                 ...(await this.#createShared(range)),
                 valueInputOption: "RAW",
                 resource: { values: [ Array.isArray(data) ? data : [data] ] }
