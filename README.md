@@ -1,7 +1,11 @@
 ![project banner](https://project-banner.phamn23.repl.co/?title=Detasheet&description=Google%20Sheets%20as%20a%20database&stack=node)
 
 # Detasheet
-Google Sheets as a database. Probably a bad idea. This package is somewhat inspired by [Deta](http://deta.sh/), a simplistic and free database system for developers. Please refer to the [Google Sheets API Reference](https://developers.google.com/sheets/api/reference/rest) for details on response data and formatting data.
+Google Sheets as a database. Probably a bad idea.
+
+Please refer to the [Google Sheets API Reference](https://developers.google.com/sheets/api/reference/rest) for details on response data and formatting data.
+
+NOTE: THIS PACKAGE USES FEATURES ONLY AVAILABLE IN NODE 14+
 
 ## What is Detasheet?
 Detasheet is a wrapper around the Google Sheets API (v4) that allows you to intuitively create and manage a database in Google Sheets. It is a work in progress and the API is subject to change.
