@@ -34,7 +34,7 @@ const sheetID = "1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc"
 
 // ways to obtain credentials
 JSON.parse(fs.readFileSync("./credentials.json"))
-{ client_email: process.env.EMAIL, process.env.PRIVATE_KEY }
+{ client_email: process.env.CLIENT_EMAIL, private_key: process.env.PRIVATE_KEY }
 ```
 
 ```js
