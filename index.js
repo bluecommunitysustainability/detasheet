@@ -11,4 +11,4 @@ const db = deta.Base("Detasheet")
 
 db.get("A1:B1").then(console.log)
 
-db.put("adsflkajsdflk jadklsjf as fljasdklf")
+db.put("adsflkajsdflk jadklsjf as fljasdklf", "C1")
