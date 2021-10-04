@@ -18,11 +18,7 @@ class Detasheet {
             const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
             const client = new google.auth.JWT(client_email, null, private_key, SCOPES)
 
-            client.authorize((err, tokens) => {
-
-                err ? reject(err) : resolve(client)
-            
-            })
+            client.authorize((err, tokens) => err ? reject(err) : resolve(client))
 
         })
 
