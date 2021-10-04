@@ -8,7 +8,7 @@ class Base {
         this.sheetID = sheetID
         this.sheetName = sheetName
         this.sheets = google.sheets("v4")
-
+        this.utils = this.#createUtils()
     }
 
     async #createShared(range) {
@@ -21,6 +21,12 @@ class Base {
 
     #createRange(range) {
         return this.sheetName + "!" + (range.includes(":") ? range : new Array(2).fill(range).join(":"))
+    }
+
+    #createUtils() {
+        return {
+            key: (len=10) => new Array(len).fill("0").map((n) => Math.random().toString(36)[2] || n).join('')
+        }
     }
 
     get(range) {
