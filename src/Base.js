@@ -19,13 +19,22 @@ class Base {
         }
     }
 
-    #createRange(range) {
+    #createRange(range="A1") {
         return this.sheetName + "!" + (range.includes(":") ? range : new Array(2).fill(range).join(":"))
     }
 
     #createUtils() {
         return {
-            key: (len=10) => new Array(len).fill("0").map((n) => Math.random().toString(36)[2] || n).join('')
+            key: (len=10) => (
+                new Array(len)
+                    .fill("0")
+                    .map((n) => Math.random().toString(36)[2] || n).join('')
+            ),
+
+            increment: (range) => (
+                this.get(range)
+                    .then(data => data.map(row => row.map(cell => cell.match(/^\d+$/) ? parseInt(cell) + 1 : cell)))
+            )
         }
     }
 
@@ -41,7 +50,23 @@ class Base {
 
     }
 
-    update(data, range="A1") {
+    clear(range) {
+
+        return new Promise(async (resolve, reject) => {
+
+            this.sheets.spreadsheets.values.clear({
+                ...(await this.#createShared(range)),
+            }, (err, response) =>  err ? reject(err) : resolve(response))
+
+        })
+
+    }
+
+    query(data) {
+
+    }
+
+    update(data, range) {
 
         return new Promise(async (resolve, reject) => {
 
@@ -55,7 +80,7 @@ class Base {
 
     }
 
-    put(data, range="A1") {
+    put(data, range) {
 
         return new Promise(async (resolve, reject) => {
 
