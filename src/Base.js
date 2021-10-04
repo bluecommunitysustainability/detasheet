@@ -25,7 +25,7 @@ class Base {
 
     }
 
-    put(data, column="A1") {
+    put(data) {
 
         return new Promise(async (resolve, reject) => {
 
@@ -35,7 +35,7 @@ class Base {
                 spreadsheetId: this.sheetID,
                 auth: await this.client, 
                 valueInputOption: "RAW",
-                range: column,
+                range: "A1",
                 resource: { values: [[ data ]] }
             }, (err, response) =>  err ? reject(err) : resolve(response))
 
