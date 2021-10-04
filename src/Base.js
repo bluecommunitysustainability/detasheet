@@ -1,9 +1,5 @@
 const { google } = require("googleapis")
 
-const makeID = (length) => (
-    new Array(length).fill("0").map((n) => Math.random().toString(36)[2] || n).join('')
-)
-
 class Base {
 
     constructor(client, sheetID, sheetName) {
@@ -29,7 +25,7 @@ class Base {
 
     }
 
-    put(data, key=makeID(10)) {
+    put(data, column="A1") {
 
         return new Promise(async (resolve, reject) => {
 
@@ -39,8 +35,8 @@ class Base {
                 spreadsheetId: this.sheetID,
                 auth: await this.client, 
                 valueInputOption: "RAW",
-                range: "A1",
-                resource: { values: [[ key, JSON.stringify(data) ]] }
+                range: column,
+                resource: { values: [[ data ]] }
             }, (err, response) =>  err ? reject(err) : resolve(response))
 
         })
