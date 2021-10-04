@@ -77,7 +77,7 @@ class Base {
                 ...(await this.#createShared(range)),
                 valueInputOption: "RAW",
                 resource: { values: await this.#formatData(range, data) }
-            }, (err, response) =>  err ? reject(err) : resolve(response))
+            }, (err, response) =>  err ? reject(err) : resolve(response.data))
 
         })
 
@@ -91,7 +91,7 @@ class Base {
                 ...(await this.#createShared(range)),
                 valueInputOption: "RAW",
                 resource: { values: await this.#formatData(range, data) }
-            }, (err, response) =>  err ? reject(err) : resolve(response))
+            }, (err, response) =>  err ? reject(err) : resolve(response.data))
 
         })
 
