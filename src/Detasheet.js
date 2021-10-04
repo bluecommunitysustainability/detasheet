@@ -3,10 +3,10 @@ const Base = require("./Base")
 
 class Detasheet {
 
-    constructor(credentials={}) {
+    constructor(credentials={}, sheetID) {
 
         this.client = this.#authorize(credentials)
-        this.bases = []
+        this.sheetID = sheetID
 
     }
 
@@ -24,10 +24,9 @@ class Detasheet {
 
     }
 
-    Base(sheetID) {
+    Base(name) {
 
-        const base = new Base(this.client, sheetID)
-        this.bases.push(base)
+        const base = new Base(this.client, this.sheetID, name)
         return base
 
     }

@@ -6,7 +6,9 @@ const Detasheet = require("./src/Detasheet")
 
 const credentials = JSON.parse(fs.readFileSync("./tokyo-trilogy-327817-7c662991acce.json"))
 
-const deta = new Detasheet(credentials)
-const db = deta.Base("1Dua_kwZjCZx1pBp_6umDVQYy_t2MT5KfmPf6u7kakcA")
+const deta = new Detasheet(credentials, "1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc")
+const db = deta.Base("Detasheet")
 
-db.get("Top Rated TV Shows!A5:B10").then(console.log)
+db.get("A1:B1").then(console.log)
+
+db.put("test")

@@ -1,11 +1,16 @@
 const { google } = require("googleapis")
 
+const makeID = (length) => (
+    new Array(length).fill("0").map((n) => Math.random().toString(36)[2] || n).join('')
+)
+
 class Base {
 
-    constructor(client, sheetID) {
+    constructor(client, sheetID, sheetName) {
 
         this.client = client
         this.sheetID = sheetID
+        this.sheetName = sheetName
         this.sheets = google.sheets("v4")
 
     }
@@ -17,33 +22,31 @@ class Base {
             this.sheets.spreadsheets.values.get({
                 spreadsheetId: this.sheetID,
                 auth: await this.client, 
-                range
+                range: this.sheetName + "!" + range
             }, (err, response) =>  err ? reject(err) : resolve(response.data.values))
         
         })
-        
 
+    }
+
+    put(data, key=makeID(10)) {
+
+        return new Promise(async (resolve, reject) => {
+
+            // await sheets.spreadsheets.values.append(request)
+            
+            this.sheets.spreadsheets.values.append({
+                spreadsheetId: this.sheetID,
+                auth: await this.client, 
+                valueInputOption: "RAW",
+                range: "A1",
+                resource: { values: [[ key, JSON.stringify(data) ]] }
+            }, (err, response) =>  err ? reject(err) : resolve(response))
+
+        })
 
     }
 
 }
-
-//     let spreadsheetId = '1Dua_kwZjCZx1pBp_6umDVQYy_t2MT5KfmPf6u7kakcA';
-//     let sheetName = 'Top Rated TV Shows!A5:B10'
-//     let sheets = google.sheets('v4');
-//     sheets.spreadsheets.values.get({
-//     auth: authClient,
-//     spreadsheetId: spreadsheetId,
-//     range: sheetName
-//     }, function (err, response) {
-//     if (err) {
-//         console.log('The API returned an error: ' + err);
-//     } else {
-//         console.log('Movie list from Google Sheets:');
-//         console.log(response.data.values)
-//     }
-//     });
-
-// })
 
 module.exports = Base
