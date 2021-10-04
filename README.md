@@ -22,7 +22,7 @@ Detasheet takes two parameters: a credential object and a sheet id.
 
 Because the credentials are simply a JSON object, you can read them from a file or use environment variables. 
 
-The sheet id is taken from the end of the Google Sheets url. For example, inhttps://docs.google.com/spreadsheets/d/1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc/edit, the id would be `1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc`.
+The sheet id is taken from the end of the Google Sheets url. For example, in the Google Sheet https://docs.google.com/spreadsheets/d/1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc/edit, the id would be `1VdSmvZLJRpVP2b0aOWB1_NVRFivLeGI3YRYZtdb-lUc`.
 
 ```js
 const credentials = {}
@@ -100,7 +100,7 @@ db.utils.key(10)
 ```
 
 ### Increment
-`increment` increments a cell by a specified amount, only if it is a number.
+`increment` increments a cell by a specified amount, only if the cell value is a number or can be parsed into a number.
 ```js
 await db.set("A1", db.utils.increment(20))
 ```
@@ -108,7 +108,7 @@ await db.set("A1", db.utils.increment(20))
 ## Full Example
 This code is also found within `index.js`.
 
-```
+```js
 const main = (async () => {
     // initialize Detasheet
     const credentials = JSON.parse(fs.readFileSync("./tokyo-trilogy-327817-7c662991acce.json"))
